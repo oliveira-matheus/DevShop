@@ -22,9 +22,12 @@ const adminCreateCategory = db => async(req, res) => {
     }else{
         try{
             await category.createCategory(db)(req.body)
-            res.send(req.body)
+            res.redirect('/admin/categorias')
         }catch(err){
-            res.send(err)
+            res.render('admin/categories/create', {
+                form: req.body,
+                errors: err.errors.fields
+            })
         }
     }
 }
