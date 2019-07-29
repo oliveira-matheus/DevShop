@@ -1,4 +1,4 @@
-const getIndex = async(req, res) => {   
+const getIndex = async (req, res) => {
     res.render('home')
 }
 

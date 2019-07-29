@@ -6,36 +6,36 @@ const generatePassHash = passwd => {
     return hash
 }
 
-const initialUser = db => async(id) => {
+const initialUser = db => async (id) => {
     const count = await db('users').count('id as total')
-   if(count[0].total === 0){
-       //criar admin
-       const user = {
-           name: 'Admin',
-           email: 'matheus@devshop.com',
-           passwd: generatePassHash('1234'),
-           email_checked: true,
-           created: new Date(),
-           updated: new Date(),
-           roles: 'admin,financial,customer'
-       }
-       await db('users').insert(user)
-   }
+    if (count[0].total === 0) {
+        //criar admin
+        const user = {
+            name: 'Admin',
+            email: 'matheus@devshop.com',
+            passwd: generatePassHash('1234'),
+            email_checked: true,
+            created: new Date(),
+            updated: new Date(),
+            roles: 'admin,financial,customer'
+        }
+        await db('users').insert(user)
+    }
 }
 
-const login = db => async(email, passwd) => {
+const login = db => async (email, passwd) => {
     const user = await db('users').select('*').where('email', email)
-    if(user.length === 0) {
+    if (user.length === 0) {
         throw new Error('Invalid user ')
     }
 
-    if(!bcrypt.compareSync(passwd, user[0].passwd)){
+    if (!bcrypt.compareSync(passwd, user[0].passwd)) {
         throw new Error('Invalid password ')
     }
     return user[0]
 }
 
 
-module.exports =  {
+module.exports = {
     initialUser, login
 }

@@ -1,10 +1,10 @@
 const Joi = require('@hapi/joi')
 
 const extractErrors = error => {
-    const errors =  error.details.reduce((prev, curr) => {
-        if(prev[curr.path[0]]){
+    const errors = error.details.reduce((prev, curr) => {
+        if (prev[curr.path[0]]) {
             prev[curr.path[0]].push(curr.type)
-        }else{
+        } else {
             prev[curr.path[0]] = [curr.type]
         }
         return prev
@@ -21,14 +21,16 @@ const ValidationError = (message, errors) => {
 }
 
 const validate = (obj, schema) => {
-    const {error, value} = Joi.validate(obj, schema, {abortEarly: false, stripUnknown: true})
-    if(error){
+    const { error, value } = Joi.validate(obj, schema, { abortEarly: false, stripUnknown: true })
+    if (error) {
         //return console.log(extractErrors(error))
         throw ValidationError('validation', extractErrors(error))
         //throw new Error({message: 'validation', errors: extractErrors(error)})
-    }else{
+    } else {
         return value
     }
 }
 
-module.exports = validate
+module.exports = {
+    validate
+}

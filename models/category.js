@@ -7,14 +7,14 @@ const createSchema = Joi.object().keys({
     description: Joi.string().min(5).required()
 })
 
-const getCategoryById = db => async(id) => {
+const getCategoryById = db => async (id) => {
     const category = await db('categories').select('*').where('id', id)
     return category
 }
 
-const getCategories = db => async() => {
+const getCategories = db => async () => {
     const categories = await db('categories').select('*')
-    const categoriesWithSlug = categories.map( category => {
+    const categoriesWithSlug = categories.map(category => {
         const newCategory = { ...category, slug: slug(category.category) }
         return newCategory
     })
@@ -23,7 +23,7 @@ const getCategories = db => async() => {
 
 
 
-const createCategory = db => async(category) => {
+const createCategory = db => async (category) => {
     const value = validation.validate(category, createSchema)
     await db('categories').insert(value)
     return true
